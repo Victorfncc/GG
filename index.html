@@ -161,7 +161,7 @@
                 <i class="fas fa-moon dark:hidden"></i>
                 <i class="fas fa-sun hidden dark:block"></i>
             </button>
-            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">Crack TOOLS</h1>
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">Gestão Financeira</h1>
             <p class="text-gray-600 text-lg">Controle de dívidas e ganhos diários</p>
             <div class="mt-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 inline-block border border-white/20">
                 <span class="text-gray-700 font-medium">Hoje: </span>
@@ -649,7 +649,21 @@
                             </button>
                         </div>
                     `;
-                    dayEl.addEventListener('click', () => openModal(day));
+                    
+                    // Add click event for opening modal (excluding delete button clicks)
+                    dayEl.addEventListener('click', (e) => {
+                        if (!e.target.closest('.delete-day-btn')) {
+                            openModal(day);
+                        }
+                    });
+                    
+                    // Add delete button event
+                    const deleteBtn = dayEl.querySelector('.delete-day-btn');
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteDay(index);
+                    });
+                    
                     historyListEl.appendChild(dayEl);
                 });
             }
@@ -690,14 +704,6 @@
                 historyModal.classList.add('hidden');
             }
 
-            // Add event listeners for delete buttons
-            document.querySelectorAll('.delete-day-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent triggering the modal open
-                    const dayIndex = parseInt(this.closest('[data-index]').getAttribute('data-index'));
-                    deleteDay(dayIndex);
-                });
-            });
 
             function deleteDay(index) {
                 const confirmed = confirm('Você realmente deseja excluir este dia?');
